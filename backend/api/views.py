@@ -27,7 +27,10 @@ class QuoteDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         profile = self.request.user  # get the user
-        return Quote.objects.filter(user=profile)  # get the quotes from that user
+        return Quote.objects.filter(profile=profile)  # get the quotes from that user
+
+    def destroy_quote(self,instance):
+        instance.delete()
 
 
 # Create your views here.

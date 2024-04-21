@@ -21,3 +21,13 @@ class QuoteSerializer(serializers.ModelSerializer):
         model = Quote
         fields = ["id", "color", "body", "author", "date", "uploaded_at"]
         extra_kwargs = {"profile": {"read_only": True}}
+
+    def create(self, validated_data):
+        if 'body' not in validated_data:
+            raise serializers.ValidationError('Body is Required')
+
+        return Quote.objects.create(**validated_data)
+
+    def delete(self):
+        quote = Quote.objects.get(pk=self.validated_data['id'])
+        quote.delete()

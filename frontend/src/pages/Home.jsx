@@ -1,5 +1,7 @@
-import { userState, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../api";
+import Quote from '../components/Quote'
+import '../styles/Home.css'
 
 function Home() {
   const [quotes, setQuotes] = useState([]);
@@ -28,29 +30,32 @@ function Home() {
     api
       .delete(`/api/quotes/delete/${id}/`)
       .then((res) => {
-        if (res.status === "204") alert("Quote deleted");
+        console.log(id)
+        if (res.status === 204) alert("Quote deleted");
         else alert("Failed to delete quote.");
+        getQuotes();
       })
       .catch((error) => alert(error));
-    getQuotes();
   };
 
   const createQuote = (e) => {
     e.preventDefault();
     api
-      .post("/api/quotes/", { color, body, author, date: dateValue })
+      .post("/api/quotes/", { color, body, author, date })
       .then((res) => {
         if (res.status === 201) alert("Quote created");
+
         else alert("Failed to make the Quote.");
+        getQuotes();
       })
       .catch((err) => alert(err));
-    getQuotes();
   };
 
   return (
     <div>
       <div>
         <h2>Quotes</h2>
+        {quotes.map((quote) => <Quote quote={quote} onDelete={deleteQuote} key={quote.id} />)}
       </div>
       <h2>Create a Quote</h2>
       <form onSubmit={createQuote}>
@@ -88,13 +93,13 @@ function Home() {
         />
         <br />
 
-        <label htmlFor="date">Date:</label>
+        <label htmlFor="date">Date: </label>
         <input
           type="date"
           id="date"
           name="date"
-          value={date}
           onChange={(e) => setDate(e.target.value)}
+          value={date}
         />
 
         <br />
@@ -103,6 +108,7 @@ function Home() {
           value="Submit"
         />
       </form>
+
     </div>
   );
 }
