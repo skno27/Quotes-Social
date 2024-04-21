@@ -22,9 +22,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/user/register/", CreateUserView.as_view(), name="register"),
-    path("api/token/", TokenObtainPairView.as_view(), name="get_token"),
-    path("api/token/refresh", TokenRefreshView.as_view(), name="refresh"),
+    path(
+        "api/user/register/", CreateUserView.as_view(), name="register"
+    ),  # we will post here
+    path(
+        "api/token/", TokenObtainPairView.as_view(), name="get_token"
+    ),  # this is where we login to get the token, so... POST
+    path(
+        "api/token/refresh", TokenRefreshView.as_view(), name="refresh"
+    ),  # token should refresh to keep the login active, POST the refresh token
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),
 ]

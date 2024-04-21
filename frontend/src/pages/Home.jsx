@@ -38,7 +38,7 @@ function Home() {
   const createQuote = (e) => {
     e.preventDefault();
     api
-      .post("/api/quotes/", { color, body, author, date })
+      .post("/api/quotes/", { color, body, author, date: dateValue })
       .then((res) => {
         if (res.status === 201) alert("Quote created");
         else alert("Failed to make the Quote.");
@@ -93,8 +93,7 @@ function Home() {
           type="date"
           id="date"
           name="date"
-          value={date || ""}
-          optional
+          value={date}
           onChange={(e) => setDate(e.target.value)}
         />
 
