@@ -29,7 +29,7 @@ urlpatterns = [
         "api/token/", TokenObtainPairView.as_view(), name="get_token"
     ),  # this is where we login to get the token, so... POST
     path(
-        "api/token/refresh", TokenRefreshView.as_view(), name="refresh"
+        "api/token/refresh/", TokenRefreshView.as_view(), name="refresh"
     ),  # token should refresh to keep the login active, POST the refresh token
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),

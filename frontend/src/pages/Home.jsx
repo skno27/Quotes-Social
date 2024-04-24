@@ -15,7 +15,8 @@ function Home() {
   }, []);
 
   const getQuotes = () => {
-    // get all the users notes
+
+    // get all the users Quotes
     api
       .get("/api/quotes/")
       .then((res) => res.data)
@@ -27,10 +28,11 @@ function Home() {
   };
 
   const deleteQuote = (id) => {
+    console.log(id) 
+
     api
       .delete(`/api/quotes/delete/${id}/`)
       .then((res) => {
-        console.log(id)
         if (res.status === 204) alert("Quote deleted");
         else alert("Failed to delete quote.");
         getQuotes();
@@ -43,7 +45,15 @@ function Home() {
     api
       .post("/api/quotes/", { color, body, author, date })
       .then((res) => {
-        if (res.status === 201) alert("Quote created");
+        if (res.status === 201) {
+          // Reset input fields after successful submission
+        setColor("");
+        setBody("");
+        setAuthor("");
+        setDate("");
+        alert("Quote created");
+      } 
+        
 
         else alert("Failed to make the Quote.");
         getQuotes();
@@ -55,7 +65,9 @@ function Home() {
     <div>
       <div>
         <h2>Quotes</h2>
-        {quotes.map((quote) => <Quote quote={quote} onDelete={deleteQuote} key={quote.id} />)}
+        {quotes.map((quote) => (
+          <Quote quote={quote} onDelete={deleteQuote} key={quote.id} />
+        ))}
       </div>
       <h2>Create a Quote</h2>
       <form onSubmit={createQuote}>

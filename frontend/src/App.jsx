@@ -40,6 +40,10 @@ function App() {
           element={<Login />}
         />
         <Route
+          path="/"
+          element={<Login />}
+        />
+        <Route
           path="/logout"
           element={<Logout />}
         />
