@@ -19,15 +19,20 @@ class UserSerializer(serializers.ModelSerializer):
 class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
-        fields = ["id", "color", "body", "author", "date", "uploaded_at"]
-        extra_kwargs = {"profile": {"read_only": True}}
+        fields = ["id", "color", "body", "author", "date", "uploaded_at", "profile"]
+        extra_kwargs = {
+            "profile": {"read_only": True},
+            "id": {"read_only": True}
+            }
 
     def create(self, validated_data):
+        # Get the authenticated user and set it as the profile
+        profile = self.context['request'].user
+        validated_data['profile'] = profile
+
         if 'body' not in validated_data:
             raise serializers.ValidationError('Body is Required')
-
         return Quote.objects.create(**validated_data)
 
-    def delete(self):
-        quote = Quote.objects.get(pk=self.validated_data['id'])
-        quote.delete()
+    def delete(self, instance):
+        instance.delete()

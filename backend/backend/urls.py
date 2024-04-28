@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from api.views import CreateUserView
+from api.views import CreateUserView, VisitProfiles
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -33,4 +33,5 @@ urlpatterns = [
     ),  # token should refresh to keep the login active, POST the refresh token
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include("api.urls")),
+    path("users/", VisitProfiles.as_view(), name="list_users")
 ]

@@ -5,12 +5,14 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Base from "./pages/Base";
+import Users from "./pages/Users";
 
 function Logout() {
   // clears tokens
   localStorage.clear();
 
-  return <Navigate to="/login" />;
+  return <Navigate to="/" />;
 }
 
 function RegisterAndLogout() {
@@ -21,26 +23,27 @@ function RegisterAndLogout() {
 }
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <BrowserRouter>
       <Routes>
         <Route
+          path="/"
+          element={<Base />}
+        />
+        <Route
+          path="/users/*"
+          element={<Users />}
+        />
+        <Route
           path="/home"
           element={
             <ProtectedRoute>
-              {/* cant access home unless user is authenticated */}
               <Home />
             </ProtectedRoute>
           }
         />
         <Route
           path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/"
           element={<Login />}
         />
         <Route
@@ -53,7 +56,6 @@ function App() {
         />
         <Route
           path="/*"
-          // 404 page
           element={<NotFound />}
         />
       </Routes>

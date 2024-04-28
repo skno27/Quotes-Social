@@ -37,3 +37,10 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [
         AllowAny
     ]  # allow unauthenticated users to access this view for signing up
+
+class VisitProfiles(generics.ListCreateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return User.objects.all()
