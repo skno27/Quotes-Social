@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import Quote from '../components/Quote'
-import '../styles/Home.css'
+import QuoteBox from "../components/QuoteBox";
+import "../styles/Home.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Home() {
   const [quotes, setQuotes] = useState([]);
@@ -15,7 +16,6 @@ function Home() {
   }, []);
 
   const getQuotes = () => {
-
     // get all the users Quotes
     api
       .get("/api/quotes/")
@@ -28,13 +28,14 @@ function Home() {
   };
 
   const deleteQuote = (id) => {
-    console.log(id) 
+    console.log(id);
 
     api
       .delete(`/api/quotes/delete/${id}/`)
       .then((res) => {
         if (res.status === 204) alert("Quote deleted");
         else alert("Failed to delete quote.");
+
         getQuotes();
       })
       .catch((error) => alert(error));
@@ -47,15 +48,12 @@ function Home() {
       .then((res) => {
         if (res.status === 201) {
           // Reset input fields after successful submission
-        setColor("");
-        setBody("");
-        setAuthor("");
-        setDate("");
-        alert("Quote created");
-      } 
-        
-
-        else alert("Failed to make the Quote.");
+          setColor("");
+          setBody("");
+          setAuthor("");
+          setDate("");
+          alert("Quote created");
+        } else alert("Failed to make the Quote.");
         getQuotes();
       })
       .catch((err) => alert(err));
@@ -64,14 +62,18 @@ function Home() {
   return (
     <div>
       <div>
-        <h2>Quotes</h2>
-        {quotes.map((quote) => (
-          <Quote quote={quote} onDelete={deleteQuote} key={quote.id} />
-        ))}
+        <h1 className="text-center">Quotes</h1>
+        {quotes.length > 0 && (
+          <QuoteBox
+            quotes={quotes}
+            onDelete={deleteQuote}
+          />
+        )}
       </div>
-      <h2>Create a Quote</h2>
+      <br />
+      <h2 className="text-center">Create a Quote</h2>
       <form onSubmit={createQuote}>
-        <label htmlFor="title">Color:</label>
+        <label htmlFor="color">Color:</label>
         <br />
         <input
           type="text"
@@ -120,7 +122,6 @@ function Home() {
           value="Submit"
         />
       </form>
-
     </div>
   );
 }
